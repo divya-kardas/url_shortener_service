@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>URL Shortener</h2>
+        <form id="urlForm">
+            <input type="text" id="longUrl" placeholder="Enter Long URL" required>
+            <input type="submit" value="Shorten URL">
+        </form>
+        <div id="shortUrlContainer" style="display:none;">
+            <h3>Shortened URL:</h3>
+            <p id="shortUrl"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('urlForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const longUrl = document.getElementById('longUrl').value;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/url/shorten', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ longUrl })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('shortUrl').innerText = data.shortUrl;
+                    document.getElementById('shortUrlContainer').style.display = 'block';
+                } else {
+                    alert(data.message || 'Error shortening URL');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to shorten URL');
+            }
+        });
+    </script>
+</body>
+</html>
