@@ -1,6 +1,9 @@
 # URL Shortener Service
 
-> API to create short urls using Node, Express and MongoDB
+> API to create short URLs using Node, Express, and MongoDB
+
+Unable to display the output because of the above problem
+Output video will be available on my GitHub account of repository URL Shortener Service
 
 ## Quick Start
 
